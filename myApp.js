@@ -28,7 +28,7 @@ const createAndSavePerson = (done) => {
   let person = getPerson("G B Aswath", 30, ["Dosai", "Poori"]);
   person.save(function (err, data) {
     if (err) {
-      console.err("Error While Saving Document " + err);
+      console.log("Error While Saving Document " + err);
       done(err);
     } else {
       console.log("Result after Addition " + JSON.stringify(data));
@@ -39,12 +39,12 @@ const createAndSavePerson = (done) => {
 
 const createManyPeople = (arrayOfPeople, done) => {
   console.log("Got People " + JSON.stringify(arrayOfPeople));
-  Person.create(arrayOfPeople, function (err, data){
+  Person.create(arrayOfPeople, function (err, data) {
     if (err) {
-      console.err("Error While Saving Document " + err);
+      console.log("Error While Saving Documents " + err);
       done(err);
     } else {
-      console.log("Result after Addition " + JSON.stringify(data));
+      console.log("Result after Bulk Addition " + JSON.stringify(data));
       done(null, data);
     }
   });
@@ -52,9 +52,9 @@ const createManyPeople = (arrayOfPeople, done) => {
 
 const findPeopleByName = (personName, done) => {
   console.log("Got Person Name " + personName + " to Search");
-  Person.find({name : personName}, function (err, data){
+  Person.find({ name: personName }, function (err, data) {
     if (err) {
-      console.err("Error While Saving Document " + err);
+      console.log("Error While Retrieving Document " + err);
       done(err);
     } else {
       console.log("Result after Find " + JSON.stringify(data));
@@ -64,7 +64,16 @@ const findPeopleByName = (personName, done) => {
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  console.log("Got Food " + food + " to Search");
+  Person.findOne({favoriteFoods : food}, function (err, data) {
+    if (err) {
+      console.log("Error while searching using findOne()" + err);
+      done(err);
+    } else {
+      console.log("Result after FindOne " + JSON.stringify(data));
+      done(null, data);
+    }
+  })
 };
 
 const findPersonById = (personId, done) => {
