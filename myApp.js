@@ -51,7 +51,16 @@ const createManyPeople = (arrayOfPeople, done) => {
 };
 
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  console.log("Got Person Name " + personName + " to Search");
+  Person.find({name : personName}, function (err, data){
+    if (err) {
+      console.err("Error While Saving Document " + err);
+      done(err);
+    } else {
+      console.log("Result after Find " + JSON.stringify(data));
+      done(null, data);
+    }
+  });
 };
 
 const findOneByFood = (food, done) => {
