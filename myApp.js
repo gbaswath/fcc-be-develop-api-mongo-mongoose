@@ -20,11 +20,15 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   }
 });
 
+function getPerson(name, age, foods) {
+  return new Person({ "name": name, "age": age, "favoriteFoods": foods });
+}
+
 const createAndSavePerson = (done) => {
-  let person = new Person({"name": "G B Aswath", "age" : 30, "favoriteFoods": ["Dosai", "Poori"]});
+  let person = getPerson("G B Aswath", 30, ["Dosai", "Poori"]);
   person.save(function (err, data) {
-    if(err) {
-      console.err(err);
+    if (err) {
+      console.err("Error While Saving Document " + err);
       done(err);
     } else {
       console.log("Result after Addition " + JSON.stringify(data));
@@ -34,7 +38,16 @@ const createAndSavePerson = (done) => {
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  console.log("Got People " + JSON.stringify(arrayOfPeople));
+  Person.create(arrayOfPeople, function (err, data){
+    if (err) {
+      console.err("Error While Saving Document " + err);
+      done(err);
+    } else {
+      console.log("Result after Addition " + JSON.stringify(data));
+      done(null, data);
+    }
+  });
 };
 
 const findPeopleByName = (personName, done) => {
