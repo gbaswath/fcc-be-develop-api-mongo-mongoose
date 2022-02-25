@@ -2,14 +2,23 @@ require('dotenv').config();
 var mongoose = require("mongoose");
 const circularJSON = require('flatted');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-  if(err)
-    console.error(err);
-  else
-    console.log("Connected to Mongo DB ", circularJSON.stringify(db));
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  favoriteFoods: [String]
 });
+const Person = mongoose.model('Person', personSchema);
+console.log("Created Person Model ", Person);
 
-let Person;
+console.log("Connect to MONGO URI " + process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+  if (err)
+    console.error(err);
+  else {
+    console.log("Connected to Mongo DB ", circularJSON.stringify(db));
+    console.log("Mongoose Connection : Connected State " + mongoose.connection.readyState);
+  }
+});
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
