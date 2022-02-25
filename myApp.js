@@ -65,7 +65,7 @@ const findPeopleByName = (personName, done) => {
 
 const findOneByFood = (food, done) => {
   console.log("Got Food " + food + " to Search");
-  Person.findOne({favoriteFoods : food}, function (err, data) {
+  Person.findOne({ favoriteFoods: food }, function (err, data) {
     if (err) {
       console.log("Error while searching using findOne()" + err);
       done(err);
@@ -77,7 +77,16 @@ const findOneByFood = (food, done) => {
 };
 
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  console.log("Going to Search using ID " + personId);
+  Person.findById({ _id: personId }, function (err, data) {
+    if (err) {
+      console.log("Error while searching using ID " + err);
+      done(err);
+    } else {
+      console.log("Got Searched Data " + data);
+      done(null, data);
+    }
+  })
 };
 
 const findEditThenSave = (personId, done) => {
