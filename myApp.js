@@ -21,7 +21,16 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 });
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  let person = new Person({"name": "G B Aswath", "age" : 30, "favoriteFoods": ""['Poori', 'Dosai']""});
+  person.save(function (err, data) {
+    if(err) {
+      console.err(err);
+      done(err);
+    } else {
+      console.log("Result after Addition " + JSON.stringify(data));
+      done(null, data);
+    }
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
