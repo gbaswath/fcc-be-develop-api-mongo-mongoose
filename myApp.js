@@ -1,5 +1,13 @@
 require('dotenv').config();
+var mongoose = require("mongoose");
+const circularJSON = require('flatted');
 
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+  if(err)
+    console.error(err);
+  else
+    console.log("Connected to Mongo DB ", circularJSON.stringify(db));
+});
 
 let Person;
 
