@@ -1,7 +1,8 @@
+//Required Imports
 require('dotenv').config();
 var mongoose = require("mongoose");
 const circularJSON = require('flatted');
-
+//Define Model
 const personSchema = new mongoose.Schema({
   name: String,
   age: Number,
@@ -9,7 +10,7 @@ const personSchema = new mongoose.Schema({
 });
 const Person = mongoose.model('Person', personSchema);
 console.log("Created Person Model ", Person);
-
+//Mongo DB Connection
 console.log("Connect to MONGO URI " + process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
   if (err)
@@ -19,11 +20,11 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     console.log("Mongoose Connection : Connected State " + mongoose.connection.readyState);
   }
 });
-
+//Create Person Document
 function getPerson(name, age, foods) {
   return new Person({ "name": name, "age": age, "favoriteFoods": foods });
 }
-
+//Create & Save Person
 const createAndSavePerson = (done) => {
   let person = getPerson("G B Aswath", 30, ["Dosai", "Poori"]);
   person.save(function (err, data) {
@@ -36,7 +37,7 @@ const createAndSavePerson = (done) => {
     }
   });
 };
-
+//Create Array of Documents
 const createManyPeople = (arrayOfPeople, done) => {
   console.log("Got People " + JSON.stringify(arrayOfPeople));
   Person.create(arrayOfPeople, function (err, data) {
@@ -49,7 +50,7 @@ const createManyPeople = (arrayOfPeople, done) => {
     }
   });
 };
-
+//Find Person By Name
 const findPeopleByName = (personName, done) => {
   console.log("Got Person Name " + personName + " to Search");
   Person.find({ name: personName }, function (err, data) {
@@ -62,7 +63,7 @@ const findPeopleByName = (personName, done) => {
     }
   });
 };
-
+//Find Person by Favorite Foods
 const findOneByFood = (food, done) => {
   console.log("Got Food " + food + " to Search");
   Person.findOne({ favoriteFoods: food }, function (err, data) {
@@ -75,7 +76,7 @@ const findOneByFood = (food, done) => {
     }
   })
 };
-
+//Find Person By ID
 const findPersonById = (personId, done) => {
   console.log("Going to Search using ID " + personId);
   Person.findById({ _id: personId }, function (err, data) {
@@ -88,7 +89,7 @@ const findPersonById = (personId, done) => {
     }
   })
 };
-
+//Find & Save Person Document
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
   console.log("Got Person ID " + personId + " to Search");
@@ -111,7 +112,7 @@ const findEditThenSave = (personId, done) => {
     }
   });
 };
-
+//Find & Update Person Document
 const findAndUpdate = (personName, done) => {
   console.log("Find Person using " + personName);
   const ageToSet = 20;
@@ -125,7 +126,7 @@ const findAndUpdate = (personName, done) => {
     }
   });
 };
-
+//Remove Document By ID
 const removeById = (personId, done) => {
   console.log("Got Person Search By ID " + personId);
   Person.findByIdAndRemove({ _id: personId }, function (err, data) {
@@ -138,7 +139,7 @@ const removeById = (personId, done) => {
     }
   });
 };
-
+//Remove Many Person Documents Matching Name
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
   Person.remove({ name: nameToRemove }, function (err, data) {
@@ -151,7 +152,7 @@ const removeManyPeople = (done) => {
     }
   });
 };
-
+//Chaing Query & Execute
 const queryChain = (done) => {
   const foodToSearch = "burrito";
   Person.find({ favoriteFoods: foodToSearch }).sort('name').limit(2).select('name favoriteFoods').exec(function (err, data) {
