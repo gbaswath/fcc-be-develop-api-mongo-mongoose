@@ -146,7 +146,7 @@ const removeManyPeople = (done) => {
       console.log("Error while Removing " + err);
       done(err);
     } else {
-      console.log("Removed Data " + data);
+      console.log("Removed Data " + JSON.stringify(data));
       done(err, data);
     }
   });
@@ -154,8 +154,15 @@ const removeManyPeople = (done) => {
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
-
-  done(null /*, data*/);
+  Person.find({ favoriteFoods: foodToSearch }).sort().limit(2).select('name favoriteFoods').exec(function (err, data) {
+    if (err) {
+      console.log("Error in Query Chain Execution " + err);
+      done(err);
+    } else {
+      console.log("Result after Query Chain Execution " + JSON.stringify(data));
+      done(null, data);
+    }
+  });
 };
 
 /** **Well Done !!**
